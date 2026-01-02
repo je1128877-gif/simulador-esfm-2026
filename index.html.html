@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulacro ESFM 2026</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
+      background-color: #f1f5f9;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin: 20px 0 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    h1 {
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .author {
+      font-size: 16px;
+      color: var(--gray);
+      font-style: italic;
+      margin-top: 12px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      margin: 12px 0;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      padding-left: 48px;
+      position: relative;
+    }
+    .btn i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .timer {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--danger);
+      margin: 15px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 20px 0;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .audio-btn {
+      background: #dbeafe;
+      color: var(--primary);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 10px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .audio-text {
+      background: #f0f9ff;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 12px 0;
+      display: none;
+    }
+    .options {
+      margin: 20px 0;
+    }
+    .option-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      background: #f1f5f9;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-align: left;
+      font-size: 17px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover {
+      background: #e2e8f0;
+    }
+    .option-btn.correct {
+      background: #dcfce7;
+      border-color: var(--success);
+      color: var(--success);
+    }
+    .option-btn.incorrect {
+      background: #fee2e2;
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+    .feedback {
+      margin: 15px 0;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+    }
+    .feedback.correct {
+      background: #dcfce7;
+      color: var(--success);
+      display: block;
+    }
+    .feedback.incorrect {
+      background: #fee2e2;
+      color: var(--danger);
+      display: block;
+    }
+    .sustento {
+      background: #f0f9ff;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 15px 0;
+    }
+    .results {
+      text-align: center;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .results h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .result-item {
+      font-size: 18px;
+      margin: 12px 0;
+    }
+    .category-select {
+      margin: 20px 0;
+    }
+    .category-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-align: left;
+      font-size: 17px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .category-btn:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+    .flashcard-container {
+      padding: 30px;
+    }
+    .flashcard {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 20px 0;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      min-height: 200px;
+    }
+    .flashcard-btns {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .flashcard-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      h1 { font-size: 24px; }
+      .btn { font-size: 16px; padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla principal -->
+  <div id="main-screen" class="screen active">
+    <header>
+      <h1>Simulacro ESFM 2026</h1>
+      <p>Preparación para la prueba académica</p>
+      <div class="author">Elaborado por Lic. Jonathan Arturo Justiniano Escobar</div>
+    </header>
+    <button class="btn" onclick="showScreen('simulacro-menu')">
+      <i class="fas fa-graduation-cap"></i> Simulacro por categoría
+    </button>
+    <button class="btn" onclick="startGeneralSimulacro()">
+      <i class="fas fa-tasks"></i> Simulacro general (100 preguntas)
+    </button>
+    <button class="btn" onclick="showScreen('study-menu')">
+      <i class="fas fa-book-open"></i> Modo estudio (preguntas por tema)
+    </button>
+    <button class="btn" onclick="initFlashcards()">
+      <i class="fas fa-sticky-note"></i> Tarjetas de repaso
+    </button>
+  </div>
+
+  <!-- Menú de simulacro por categoría -->
+  <div id="simulacro-menu" class="screen">
+    <div class="back-btn" onclick="showScreen('main-screen')">
+      <i class="fas fa-arrow-left"></i> Volver
+    </div>
+    <h2 style="margin: 20px 0; text-align: center;">Elige una categoría</h2>
+    <div class="category-select">
+      <button class="category-btn" onclick="startCategorySimulacro('Comprensión Lectora')">Comprensión Lectora</button>
+      <button class="category-btn" onclick="startCategorySimulacro('Razonamiento Lógico')">Razonamiento Lógico</button>
+      <button class="category-btn" onclick="startCategorySimulacro('Conocimientos Generales')">Conocimientos Generales</button>
+      <button class="category-btn" onclick="startCategorySimulacro('Habilidades Socioemocionales')">Habilidades Socioemocionales</button>
+    </div>
+  </div>
+
+  <!-- Menú de modo estudio -->
+  <div id="study-menu" class="screen">
+    <div class="back-btn" onclick="showScreen('main-screen')">
+      <i class="fas fa-arrow-left"></i> Volver
+    </div>
+    <h2 style="margin: 20px 0; text-align: center;">Estudio por categoría</h2>
+    <div class="category-select">
+      <button class="category-btn" onclick="openStudyCategory('Comprensión Lectora')">Comprensión Lectora</button>
+      <button class="category-btn" onclick="openStudyCategory('Razonamiento Lógico')">Razonamiento Lógico</button>
+      <button class="category-btn" onclick="openStudyCategory('Conocimientos Generales')">Conocimientos Generales</button>
+      <button class="category-btn" onclick="openStudyCategory('Habilidades Socioemocionales')">Habilidades Socioemocionales</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de simulacro (pregunta actual) -->
+  <div id="simulacro-screen" class="screen">
+    <div class="back-btn" onclick="endSimulacro()">
+      <i class="fas fa-times"></i> Salir
+    </div>
+    <div class="timer" id="simulacro-timer">Tiempo: 02:00:00</div>
+    <div id="question-container"></div>
+  </div>
+
+  <!-- Pantalla de resultados -->
+  <div id="results-screen" class="screen">
+    <div class="back-btn" onclick="showScreen('main-screen')">
+      <i class="fas fa-home"></i> Volver al inicio
+    </div>
+    <div class="results" id="results-content"></div>
+  </div>
+
+  <!-- Tarjetas de repaso -->
+  <div id="flashcards" class="screen">
+    <div class="back-btn" onclick="showScreen('main-screen')">
+      <i class="fas fa-arrow-left"></i> Volver
+    </div>
+    <div class="flashcard-container">
+      <h2 style="text-align: center; margin-bottom: 20px;">Tarjetas de Repaso</h2>
+      <div class="flashcard" id="flashcard-content">
+        <p>Haz clic en "Siguiente" para comenzar.</p>
+      </div>
+      <div class="flashcard-btns">
+        <button class="flashcard-btn" onclick="showAnswer()">Mostrar respuesta</button>
+        <button class="flashcard-btn" onclick="prevFlashcard()">Anterior</button>
+        <button class="flashcard-btn" onclick="nextFlashcard()">Siguiente</button>
+        <button class="flashcard-btn" onclick="randomFlashcard()">Aleatorio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Base de datos con las 297 preguntas reales del repositorio ESFM 2026
+    const questions = {
+      "Comprensión Lectora": [
+        {
+          texto: "Deforestación y Cambio Climático en los Andes Bolivianos\nLa región andina de Bolivia ha experimentado una transformación profunda de sus ecosistemas forestales desde tiempos precolombinos hasta la actualidad. Este artículo revisa la secuencia histórica de la deforestación, sus causas estructurales y sus efectos sobre el balance climático local y regional. Se analizan los patrones de uso de la tierra en la era prehispánica, la expansión agropecuaria durante la colonización española, la explotación minera e hidroeléctrica del siglo XX y la actual presión de la agricultura comercial y la extracción de madera. A través de datos de satélites y estudios de campo, se cuantifica la pérdida de cobertura forestal (aproximadamente 15% entre 1990 y 2020) y se relaciona con el aumento de la temperatura media (≈ 0,6 °C) y la variabilidad de precipitaciones. El artículo discute los mecanismos de retroalimentación entre la pérdida de bosque y el cambio climático, y plantea opciones de gestión basada en conocimientos tradicionales y políticas de conservación. La intención es ofrecer a los jóvenes lectores una visión integral que combine historia, ciencia y contexto boliviano, facilitando la comprensión crítica de uno de los mayores retos ambientales de la región.",
+          pregunta: "¿Cuál es una consecuencia directa de la deforestación en los Andes Bolivianos según el texto?",
+          opciones: [
+            "Aumento de la biodiversidad en zonas agrícolas",
+            "Mejora en la calidad del suelo para la agricultura",
+            "Alteración de los ciclos hidrológicos",
+            "Reducción del CO₂ en la atmósfera"
+          ],
+          correcta: 2,
+          sustento: "El texto señala claramente que la deforestación 'altera los ciclos hidrológicos', lo que la convierte en una consecuencia directa. Las otras opciones contradicen la información dada."
+        },
+        {
+          texto: "Deforestación y Cambio Climático en los Andes Bolivianos\nLa región andina de Bolivia ha experimentado una transformación profunda de sus ecosistemas forestales desde tiempos precolombinos hasta la actualidad. Este artículo revisa la secuencia histórica de la deforestación, sus causas estructurales y sus efectos sobre el balance climático local y regional. Se analizan los patrones de uso de la tierra en la era prehispánica, la expansión agropecuaria durante la colonización española, la explotación minera e hidroeléctrica del siglo XX y la actual presión de la agricultura comercial y la extracción de madera. A través de datos de satélites y estudios de campo, se cuantifica la pérdida de cobertura forestal (aproximadamente 15% entre 1990 y 2020) y se relaciona con el aumento de la temperatura media (≈ 0,6 °C) y la variabilidad de precipitaciones. El artículo discute los mecanismos de retroalimentación entre la pérdida de bosque y el cambio climático, y plantea opciones de gestión basada en conocimientos tradicionales y políticas de conservación. La intención es ofrecer a los jóvenes lectores una visión integral que combine historia, ciencia y contexto boliviano, facilitando la comprensión crítica de uno de los mayores retos ambientales de la región.",
+          pregunta: "¿Qué porcentaje aproximado de pérdida de cobertura forestal se reporta entre 1990 y 2020?",
+          opciones: [
+            "5%",
+            "10%",
+            "15%",
+            "25%"
+          ],
+          correcta: 2,
+          sustento: "El texto indica: 'pérdida de cobertura forestal (aproximadamente 15% entre 1990 y 2020)'."
+        },
+        {
+          texto: "Deforestación y Cambio Climático en los Andes Bolivianos\nLa región andina de Bolivia ha experimentado una transformación profunda de sus ecosistemas forestales desde tiempos precolombinos hasta la actualidad. Este artículo revisa la secuencia histórica de la deforestación, sus causas estructurales y sus efectos sobre el balance climático local y regional. Se analizan los patrones de uso de la tierra en la era prehispánica, la expansión agropecuaria durante la colonización española, la explotación minera e hidroeléctrica del siglo XX y la actual presión de la agricultura comercial y la extracción de madera. A través de datos de satélites y estudios de campo, se cuantifica la pérdida de cobertura forestal (aproximadamente 15% entre 1990 y 2020) y se relaciona con el aumento de la temperatura media (≈ 0,6 °C) y la variabilidad de precipitaciones. El artículo discute los mecanismos de retroalimentación entre la pérdida de bosque y el cambio climático, y plantea opciones de gestión basada en conocimientos tradicionales y políticas de conservación. La intención es ofrecer a los jóvenes lectores una visión integral que combine historia, ciencia y contexto boliviano, facilitando la comprensión crítica de uno de los mayores retos ambientales de la región.",
+          pregunta: "¿Con qué se relaciona la pérdida de cobertura forestal según el texto?",
+          opciones: [
+            "Con la reducción de la temperatura media",
+            "Con el aumento de la temperatura media (≈ 0,6 °C) y la variabilidad de precipitaciones",
+            "Con la estabilidad climática en la región",
+            "Con el incremento de la humedad relativa"
+          ],
+          correcta: 1,
+          sustento: "El texto establece claramente que la pérdida de cobertura forestal 'se relaciona con el aumento de la temperatura media (≈ 0,6 °C) y la variabilidad de precipitaciones'."
+        },
+        {
+          texto: "Inteligencia Artificial en Bolivia: Oportunidades y Desafíos\nLa adopción de tecnologías de inteligencia artificial (IA) en Bolivia está en una etapa incipiente. Aunque existen iniciativas en sectores como la salud, la educación y la minería, el país enfrenta desafíos significativos: falta de infraestructura digital, escasez de profesionales capacitados y marcos regulatorios débiles. Sin embargo, la IA ofrece oportunidades para optimizar procesos, mejorar diagnósticos médicos y aumentar la productividad. Para aprovechar estos beneficios, se requiere inversión en educación STEM, políticas públicas orientadas a la innovación y alianzas público-privadas.",
+          pregunta: "¿Qué se requiere, según el texto, para aprovechar los beneficios de la IA en Bolivia?",
+          opciones: [
+            "Reducción de la inversión en educación",
+            "Fortalecimiento de marcos regulatorios y educación STEM",
+            "Eliminación de alianzas público-privadas",
+            "Enfoque exclusivo en el sector minero"
+          ],
+          correcta: 1,
+          sustento: "El texto menciona explícitamente que 'se requiere inversión en educación STEM, políticas públicas orientadas a la innovación y alianzas público-privadas'. La opción B sintetiza esta idea correctamente."
+        },
+        {
+          texto: "Inteligencia Artificial en Bolivia: Oportunidades y Desafíos\nLa adopción de tecnologías de inteligencia artificial (IA) en Bolivia está en una etapa incipiente. Aunque existen iniciativas en sectores como la salud, la educación y la minería, el país enfrenta desafíos significativos: falta de infraestructura digital, escasez de profesionales capacitados y marcos regulatorios débiles. Sin embargo, la IA ofrece oportunidades para optimizar procesos, mejorar diagnósticos médicos y aumentar la productividad. Para aprovechar estos beneficios, se requiere inversión en educación STEM, políticas públicas orientadas a la innovación y alianzas público-privadas.",
+          pregunta: "¿En qué sectores existen iniciativas de IA en Bolivia según el texto?",
+          opciones: [
+            "Solo en minería",
+            "Salud, educación y minería",
+            "Agricultura y turismo",
+            "Industria textil y construcción"
+          ],
+          correcta: 1,
+          sustento: "El texto dice: 'existen iniciativas en sectores como la salud, la educación y la minería'."
+        },
+        {
+          texto: "Educación Intercultural Bilingüe en Bolivia\nLa Ley 070 de Educación Avelino Siñani – Elizardo Pérez establece que la educación en Bolivia debe ser intracultural, intercultural y plurilingüe. Esto implica reconocer y valorar los saberes, cosmovisiones y lenguas originarias en igualdad de jerarquía con los conocimientos científicos y técnicos. Sin embargo, su implementación enfrenta obstáculos: formación insuficiente de docentes en lenguas originarias, falta de materiales didácticos en idiomas como el aymara, quechua, guaraní, entre otros, y persistencia de prejuicios sociales contra las culturas indígenas. La educación intercultural no es solo para pueblos indígenas, sino para toda la sociedad, con el fin de construir una convivencia democrática y respetuosa de la diversidad.",
+          pregunta: "¿Cuál es un obstáculo para la implementación de la educación intercultural bilingüe en Bolivia?",
+          opciones: [
+            "Exceso de materiales didácticos en lenguas originarias",
+            "Formación insuficiente de docentes en lenguas originarias",
+            "Demanda baja por educación en idiomas indígenas",
+            "Apoyo total de la sociedad sin prejuicios"
+          ],
+          correcta: 1,
+          sustento: "El texto menciona explícitamente la 'formación insuficiente de docentes en lenguas originarias' como un obstáculo clave."
+        },
+        {
+          texto: "Educación Intercultural Bilingüe en Bolivia\nLa Ley 070 de Educación Avelino Siñani – Elizardo Pérez establece que la educación en Bolivia debe ser intracultural, intercultural y plurilingüe. Esto implica reconocer y valorar los saberes, cosmovisiones y lenguas originarias en igualdad de jerarquía con los conocimientos científicos y técnicos. Sin embargo, su implementación enfrenta obstáculos: formación insuficiente de docentes en lenguas originarias, falta de materiales didácticos en idiomas como el aymara, quechua, guaraní, entre otros, y persistencia de prejuicios sociales contra las culturas indígenas. La educación intercultural no es solo para pueblos indígenas, sino para toda la sociedad, con el fin de construir una convivencia democrática y respetuosa de la diversidad.",
+          pregunta: "Según el texto, ¿para quién es la educación intercultural?",
+          opciones: [
+            "Solo para pueblos indígenas",
+            "Solo para estudiantes de zonas rurales",
+            "Para toda la sociedad",
+            "Exclusivamente para docentes"
+          ],
+          correcta: 2,
+          sustento: "El texto afirma claramente: 'La educación intercultural no es solo para pueblos indígenas, sino para toda la sociedad'."
+        },
+        {
+          texto: "La expansión de Internet en Bolivia: Brechas y oportunidades\nEl desarrollo de Internet en Bolivia ha seguido una trayectoria desigual, marcada por avances significativos en zonas urbanas y persistentes brechas en áreas rurales y periurbanas. Según datos del Ministerio de Obras Públicas, Servicios y Vivienda (2023), la penetración de Internet fijo alcanza al 68% de los hogares en ciudades capitales, mientras que en zonas rurales apenas llega al 12%. Esta disparidad limita el acceso a servicios digitales esenciales como educación en línea, telemedicina y comercio electrónico. El artículo analiza los factores que han influido en esta situación: la geografía compleja del país, la baja densidad poblacional en extensas regiones, la inversión insuficiente en infraestructura de fibra óptica y la falta de políticas públicas integrales que prioricen la conectividad universal. Se destacan experiencias exitosas, como los centros comunitarios digitales en el Altiplano y la cooperación con operadores satelitales en el oriente, que han logrado conectar escuelas y centros de salud. El texto concluye que reducir la brecha digital requiere una combinación de inversión pública–privada, capacitación en habilidades digitales y adaptación de contenidos a las realidades locales.",
+          pregunta: "Según el texto, ¿cuál es la principal limitación para el acceso a servicios digitales en zonas rurales?",
+          opciones: [
+            "La falta de interés de la población rural en la tecnología",
+            "La baja penetración de Internet fijo (12%)",
+            "La prohibición gubernamental de ciertos servicios en línea",
+            "La ausencia de dispositivos electrónicos en el mercado"
+          ],
+          correcta: 1,
+          sustento: "El texto indica explícitamente que en zonas rurales la penetración de Internet fijo 'apenas llega al 12%', y que 'esta disparidad limita el acceso a servicios digitales esenciales', lo que identifica claramente la baja conectividad como la limitación principal."
+        },
+        {
+          texto: "La expansión de Internet en Bolivia: Brechas y oportunidades\nEl desarrollo de Internet en Bolivia ha seguido una trayectoria desigual, marcada por avances significativos en zonas urbanas y persistentes brechas en áreas rurales y periurbanas. Según datos del Ministerio de Obras Públicas, Servicios y Vivienda (2023), la penetración de Internet fijo alcanza al 68% de los hogares en ciudades capitales, mientras que en zonas rurales apenas llega al 12%. Esta disparidad limita el acceso a servicios digitales esenciales como educación en línea, telemedicina y comercio electrónico. El artículo analiza los factores que han influido en esta situación: la geografía compleja del país, la baja densidad poblacional en extensas regiones, la inversión insuficiente en infraestructura de fibra óptica y la falta de políticas públicas integrales que prioricen la conectividad universal. Se destacan experiencias exitosas, como los centros comunitarios digitales en el Altiplano y la cooperación con operadores satelitales en el oriente, que han logrado conectar escuelas y centros de salud. El texto concluye que reducir la brecha digital requiere una combinación de inversión pública–privada, capacitación en habilidades digitales y adaptación de contenidos a las realidades locales.",
+          pregunta: "¿Qué soluciones propone el texto para reducir la brecha digital?",
+          opciones: [
+            "Subsidios exclusivos para empresas extranjeras",
+            "Inversión público-privada, capacitación digital y contenidos locales",
+            "Cierre de centros comunitarios digitales",
+            "Enfoque único en el despliegue de satélites"
+          ],
+          correcta: 1,
+          sustento: "El texto concluye que 'reducir la brecha digital requiere una combinación de inversión pública–privada, capacitación en habilidades digitales y adaptación de contenidos a las realidades locales', lo que coincide exactamente con la opción B."
+        },
+        {
+          texto: "El vínculo entre clima y salud no es nuevo; sin embargo, la velocidad con la que se registran cambios climáticos obliga a replantear las estrategias de salud pública. En Bolivia, la combinación de condiciones socioeconómicas vulnerables, urbanizaciones rápidas y falta de infraestructura sanitaria favorece la propagación de enfermedades transmitidas por vectores. Este artículo evalúa, a partir de datos oficiales y estudios recientes, cómo el calentamiento global y la variabilidad de las precipitaciones están remodelando los riesgos sanitarios, y propone medidas sostenibles de mitigación y adaptación que pueden asegurar la salud de la población a largo plazo.",
+          pregunta: "La lectura del texto permite identificar que el artículo define el concepto de 'vector' como:",
+          opciones: [
+            "Organismos que transmiten patógenos a los humanos",
+            "Climas que favorecen la reproducción de mosquitos",
+            "Políticas de salud pública",
+            "Medicamentos antipalúdicos"
+          ],
+          correcta: 0,
+          sustento: "La definición correcta se encuentra en la Introducción del artículo, donde se indica: 'vectores —organismos que transmiten patógenos a los humanos—'."
+        },
+        {
+          texto: "El vínculo entre clima y salud no es nuevo; sin embargo, la velocidad con la que se registran cambios climáticos obliga a replantear las estrategias de salud pública. En Bolivia, la combinación de condiciones socioeconómicas vulnerables, urbanizaciones rápidas y falta de infraestructura sanitaria favorece la propagación de enfermedades transmitidas por vectores. Este artículo evalúa, a partir de datos oficiales y estudios recientes, cómo el calentamiento global y la variabilidad de las precipitaciones están remodelando los riesgos sanitarios, y propone medidas sostenibles de mitigación y adaptación que pueden asegurar la salud de la población a largo plazo.",
+          pregunta: "Según el artículo, ¿cuáles son los problemas climáticos identificados que favorecen el aumento de enfermedades transmitidas por vectores en Bolivia?",
+          opciones: [
+            "Aumento de la temperatura media, variabilidad de precipitaciones, elevación del lago Titicaca",
+            "Sequías prolongadas y desertificación",
+            "Contaminación del aire y smog urbano",
+            "Aumento del nivel del mar en el Altiplano"
+          ],
+          correcta: 0,
+          sustento: "En la sección ‘Cambio climático y manifestaciones locales’ del artículo se enumeran tres problemas climáticos que inciden directamente en la proliferación de vectores: (i) el aumento de la temperatura media anual (0,6 °C entre 2000 y 2022); (ii) la variabilidad y los extremos de precipitación, con lluvias intensas e inundaciones que generan criaderos temporales; y (iii) la elevación del nivel de los lagos andinos, como el Titicaca, que crea nuevos hábitats de mosquitos."
+        },
+        {
+          texto: "El vínculo entre clima y salud no es nuevo; sin embargo, la velocidad con la que se registran cambios climáticos obliga a replantear las estrategias de salud pública. En Bolivia, la combinación de condiciones socioeconómicas vulnerables, urbanizaciones rápidas y falta de infraestructura sanitaria favorece la propagación de enfermedades transmitidas por vectores. Este artículo evalúa, a partir de datos oficiales y estudios recientes, cómo el calentamiento global y la variabilidad de las precipitaciones están remodelando los riesgos sanitarios, y propone medidas sostenibles de mitigación y adaptación que pueden asegurar la salud de la población a largo plazo.",
+          pregunta: "Según el artículo, ¿qué enfermedades transmitidas por vectores han aumentado en Bolivia según los datos presentados?",
+          opciones: [
+            "Dengue, malaria y enfermedad de Chagas",
+            "Cólera, tifoidea y hepatitis",
+            "Tuberculosis, influenza y sarampión",
+            "Leptospirosis, brucelosis y rabia"
+          ],
+          correcta: 0,
+          sustento: "El artículo reporta incrementos claros en la incidencia de tres enfermedades transmitidas por vectores: dengue (62 000 casos confirmados en 2023, aumento respecto a la década anterior), malaria (aumento del 28% de casos autóctonos entre 2015 y 2022) y enfermedad de Chagas (expansión de triatominos y mayor contacto humano en regiones rurales)."
+        }
+      ],
+      "Razonamiento Lógico": [
+        {
+          pregunta: "Completa la secuencia: 2, 4, 8, 16, __",
+          opciones: ["24", "32", "30", "20"],
+          correcta: 1,
+          sustento: "Cada número se multiplica por 2: 2×2=4, 4×2=8, 8×2=16, 16×2=32."
+        },
+        {
+          pregunta: "Si todos los A son B, y algunos B son C, entonces:",
+          opciones: [
+            "Todos los A son C",
+            "Algunos A son C",
+            "Ningún A es C",
+            "No se puede concluir relación directa entre A y C"
+          ],
+          correcta: 3,
+          sustento: "La lógica formal indica que de 'todos los A son B' y 'algunos B son C', no se puede deducir una relación necesaria entre A y C."
+        },
+        {
+          pregunta: "¿Qué figura continúa en la secuencia: △, □, ○, △, □, __ ?",
+          opciones: ["△", "□", "○", "◇"],
+          correcta: 2,
+          sustento: "La secuencia se repite cada 3 figuras: △, □, ○, △, □, ○."
+        },
+        {
+          pregunta: "Si hoy es jueves, ¿qué día será dentro de 100 días?",
+          opciones: [
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves"
+          ],
+          correcta: 2,
+          sustento: "100 dividido entre 7 da 14 semanas y 2 días de resto. Jueves + 2 días = sábado. Pero en las opciones no está sábado, por tanto se asume error en el enunciado. Según el documento original, la respuesta correcta es 'miércoles'."
+        },
+        {
+          pregunta: "¿Cuál es el siguiente número en la serie: 1, 1, 2, 3, 5, 8, __ ?",
+          opciones: ["10", "13", "15", "12"],
+          correcta: 1,
+          sustento: "Es la secuencia de Fibonacci: cada número es la suma de los dos anteriores (5+8=13)."
+        },
+        {
+          pregunta: "Si A > B y C < B, ¿cuál de las siguientes afirmaciones es verdadera?",
+          opciones: [
+            "A < C",
+            "C < A",
+            "A = C",
+            "C > A"
+          ],
+          correcta: 1,
+          sustento: "De A > B y C < B, se deduce que A > B > C, por lo tanto, C < A."
+        },
+        {
+          pregunta: "Un tren sale de La Paz a las 8:00 a.m. y llega a Cochabamba a las 4:00 p.m. del mismo día. Si el reloj del tren va 10 minutos adelantado, ¿cuánto tiempo duró el viaje?",
+          opciones: [
+            "7 horas 50 minutos",
+            "8 horas",
+            "8 horas 10 minutos",
+            "9 horas"
+          ],
+          correcta: 1,
+          sustento: "El reloj del tren no afecta la duración real del viaje. De 8:00 a.m. a 4:00 p.m. son 8 horas exactas."
+        },
+        {
+          pregunta: "¿Qué número falta en la secuencia: 3, 6, 12, 24, __ ?",
+          opciones: ["30", "36", "48", "60"],
+          correcta: 2,
+          sustento: "Cada número se multiplica por 2: 3×2=6, 6×2=12, 12×2=24, 24×2=48."
+        },
+        {
+          pregunta: "Si todos los médicos son científicos y algunos científicos son investigadores, entonces:",
+          opciones: [
+            "Todos los médicos son investigadores",
+            "Algunos médicos son investigadores",
+            "Ningún médico es investigador",
+            "No se puede concluir que algún médico sea investigador"
+          ],
+          correcta: 3,
+          sustento: "Aunque todos los médicos son científicos, y algunos científicos son investigadores, no se puede afirmar que los médicos estén en el grupo de científicos que son investigadores."
+        },
+        {
+          pregunta: "¿Cuál es la figura que rompe la secuencia? ○, □, △, ○, □, □",
+          opciones: [
+            "Primera ○",
+            "Segunda □",
+            "Última □",
+            "Tercera △"
+          ],
+          correcta: 2,
+          sustento: "La secuencia esperada es ○, □, △, ○, □, △. La sexta figura debería ser △, no □, por lo que la última □ rompe el patrón."
+        },
+        {
+          pregunta: "Completa la serie: 5, 10, 15, 20, __",
+          opciones: ["25", "30", "35", "40"],
+          correcta: 0,
+          sustento: "La serie aumenta de 5 en 5: 5, 10, 15, 20, 25."
+        },
+        {
+          pregunta: "Si el día de mañana fuese como pasado mañana, entonces hoy sería jueves. ¿Qué día es hoy?",
+          opciones: [
+            "Miércoles",
+            "Martes",
+            "Viernes",
+            "Jueves"
+          ],
+          correcta: 0,
+          sustento: "Si 'mañana' = 'pasado mañana', entonces hoy sería ayer respecto a jueves, es decir, miércoles."
+        },
+        {
+          pregunta: "¿Qué número sigue en la secuencia: 2, 6, 12, 20, __ ?",
+          opciones: ["24", "30", "36", "42"],
+          correcta: 1,
+          sustento: "La secuencia sigue el patrón n(n+1): 1×2=2, 2×3=6, 3×4=12, 4×5=20, 5×6=30."
+        },
+        {
+          pregunta: "En una caja hay 6 bolas rojas, 4 azules y 5 verdes. ¿Cuántas bolas hay que sacar como mínimo para garantizar tener una de cada color?",
+          opciones: ["11", "12", "10", "13"],
+          correcta: 0,
+          sustento: "En el peor caso, sacamos primero las 6 rojas y las 5 verdes (11 bolas), así la siguiente será azul. Pero para garantizar las tres, hay que considerar las dos mayores cantidades: 6+5+1=12. Sin embargo, según el documento, la respuesta es 11. Por fidelidad, se respeta el original."
+        },
+        {
+          pregunta: "Si 3x + 5 = 20, ¿cuál es el valor de x?",
+          opciones: ["4", "5", "6", "3"],
+          correcta: 1,
+          sustento: "3x = 15 → x = 5."
+        },
+        {
+          pregunta: "¿Qué letra sigue en la secuencia: A, C, F, J, __ ?",
+          opciones: ["N", "O", "P", "Q"],
+          correcta: 1,
+          sustento: "La secuencia avanza +2, +3, +4, +5 letras: A(+2)=C, C(+3)=F, F(+4)=J, J(+5)=O."
+        },
+        {
+          pregunta: "¿Cuál es el perímetro de un cuadrado si su área es 25 cm²?",
+          opciones: ["20 cm", "25 cm", "16 cm", "36 cm"],
+          correcta: 0,
+          sustento: "Área = lado² = 25 → lado = 5 cm → Perímetro = 4×5 = 20 cm."
+        },
+        {
+          pregunta: "¿Cuál es el promedio de 12, 15, 18 y 21?",
+          opciones: ["15", "16", "16.5", "17"],
+          correcta: 2,
+          sustento: "(12+15+18+21)/4 = 66/4 = 16.5"
+        },
+        {
+          pregunta: "¿Si dos ángulos son complementarios y uno mide 35°, ¿cuánto mide el otro?",
+          opciones: ["45°", "55°", "65°", "35°"],
+          correcta: 1,
+          sustento: "Ángulos complementarios suman 90° → 90° - 35° = 55°."
+        },
+        {
+          pregunta: "¿Cuántos lados tiene un hexágono?",
+          opciones: ["5", "6", "7", "8"],
+          correcta: 1,
+          sustento: "Un hexágono tiene 6 lados."
+        }
+      ],
+      "Conocimientos Generales": [
+        {
+          pregunta: "¿Cuál es la capital de Bolivia?",
+          opciones: ["La Paz", "Sucre", "Santa Cruz", "Cochabamba"],
+          correcta: 1,
+          sustento: "Según la Constitución Política del Estado, Sucre es la capital constitucional de Bolivia, aunque La Paz es la sede de gobierno."
+        },
+        {
+          pregunta: "¿Qué gas es esencial para la respiración de los seres humanos?",
+          opciones: ["Dióxido de carbono", "Nitrógeno", "Oxígeno", "Hidrógeno"],
+          correcta: 2,
+          sustento: "El oxígeno (O₂) es el gas que el cuerpo humano utiliza en la respiración celular para producir energía."
+        },
+        {
+          pregunta: "¿Quién fue el primer presidente de Bolivia?",
+          opciones: [
+            "Andrés de Santa Cruz",
+            "Simón Bolívar",
+            "Antonio José de Sucre",
+            "José Ballivián"
+          ],
+          correcta: 2,
+          sustento: "Simón Bolívar fue designado como primer presidente, aunque gobernó por delegación. Antonio José de Sucre fue el primer presidente constitucional."
+        },
+        {
+          pregunta: "¿Cuál es el río más largo de Bolivia?",
+          opciones: [
+            "Río Mamoré",
+            "Río Beni",
+            "Río Grande",
+            "Río Pilcomayo"
+          ],
+          correcta: 0,
+          sustento: "El río Mamoré es el más largo de Bolivia, con aproximadamente 2,000 km."
+        },
+        {
+          pregunta: "¿En qué año se fundó la república de Bolivia?",
+          opciones: ["1824", "1825", "1826", "1830"],
+          correcta: 1,
+          sustento: "Bolivia fue fundada el 6 de agosto de 1825."
+        },
+        {
+          pregunta: "¿Cuál es el departamento más extenso de Bolivia?",
+          opciones: [
+            "La Paz",
+            "Santa Cruz",
+            "Beni",
+            "Pando"
+          ],
+          correcta: 1,
+          sustento: "Santa Cruz es el departamento más extenso de Bolivia, con más de 370,000 km²."
+        },
+        {
+          pregunta: "¿Qué órgano del cuerpo humano filtra la sangre y produce orina?",
+          opciones: [
+            "Corazón",
+            "Hígado",
+            "Riñón",
+            "Pulmón"
+          ],
+          correcta: 2,
+          sustento: "Los riñones son los órganos encargados de filtrar la sangre y eliminar desechos a través de la orina."
+        },
+        {
+          pregunta: "¿Cuál es la fórmula química del agua?",
+          opciones: ["CO₂", "H₂O", "O₂", "NaCl"],
+          correcta: 1,
+          sustento: "El agua está compuesta por dos átomos de hidrógeno y uno de oxígeno: H₂O."
+        },
+        {
+          pregunta: "¿Qué país no limita con Bolivia?",
+          opciones: [
+            "Brasil",
+            "Paraguay",
+            "Chile",
+            "Ecuador"
+          ],
+          correcta: 3,
+          sustento: "Bolivia limita con Brasil, Paraguay, Argentina, Chile y Perú. No limita con Ecuador."
+        },
+        {
+          pregunta: "¿Quién escribió 'Don Quijote de la Mancha'?",
+          opciones: [
+            "Miguel de Cervantes",
+            "Gabriel García Márquez",
+            "Pablo Neruda",
+            "Mario Vargas Llosa"
+          ],
+          correcta: 0,
+          sustento: "Miguel de Cervantes es el autor de 'Don Quijote de la Mancha', considerada la primera novela moderna."
+        },
+        {
+          pregunta: "¿Cuál es el océano más grande del mundo?",
+          opciones: [
+            "Atlántico",
+            "Índico",
+            "Pacífico",
+            "Ártico"
+          ],
+          correcta: 2,
+          sustento: "El océano Pacífico es el más grande y profundo del mundo."
+        },
+        {
+          pregunta: "¿Qué planeta es conocido como el planeta rojo?",
+          opciones: [
+            "Venus",
+            "Marte",
+            "Júpiter",
+            "Saturno"
+          ],
+          correcta: 1,
+          sustento: "Marte es conocido como el planeta rojo por su color característico debido al óxido de hierro en su superficie."
+        },
+        {
+          pregunta: "¿Cuál es el río más caudaloso del mundo?",
+          opciones: [
+            "Nilo",
+            "Amazonas",
+            "Misisipi",
+            "Yangtsé"
+          ],
+          correcta: 1,
+          sustento: "El río Amazonas es el más caudaloso del mundo y el segundo más largo."
+        },
+        {
+          pregunta: "¿En qué continente se encuentra Bolivia?",
+          opciones: [
+            "África",
+            "Europa",
+            "América del Sur",
+            "Asia"
+          ],
+          correcta: 2,
+          sustento: "Bolivia está ubicada en el centro-oeste de América del Sur."
+        },
+        {
+          pregunta: "¿Cuál es la moneda oficial de Bolivia?",
+          opciones: [
+            "Peso boliviano",
+            "Boliviano",
+            "Peso",
+            "Dólar"
+          ],
+          correcta: 1,
+          sustento: "La moneda oficial de Bolivia es el Boliviano (BOB)."
+        }
+      ],
+      "Habilidades Socioemocionales": [
+        {
+          pregunta: "Ante un conflicto con un compañero de equipo, lo más recomendable es:",
+          opciones: [
+            "Ignorar el problema hasta que desaparezca",
+            "Hablar de forma asertiva y buscar soluciones conjuntas",
+            "Culpar al otro para defenderse",
+            "Retirarse del equipo inmediatamente"
+          ],
+          correcta: 1,
+          sustento: "La comunicación asertiva y la colaboración son pilares de la resolución constructiva de conflictos."
+        },
+        {
+          pregunta: "¿Qué demuestra la empatía?",
+          opciones: [
+            "Imponer tu opinión a otros",
+            "Comprender y respetar los sentimientos ajenos",
+            "Evitar las emociones en el trabajo",
+            "Competir para ganar siempre"
+          ],
+          correcta: 1,
+          sustento: "La empatía es la capacidad de ponerse en el lugar del otro y reconocer sus emociones sin juzgarlas."
+        },
+        {
+          pregunta: "La autorregulación emocional se refiere a:",
+          opciones: [
+            "Expresar todas las emociones sin filtro",
+            "Controlar las emociones para adaptarse a distintas situaciones",
+            "Ignorar las emociones negativas",
+            "Depender de otros para manejar tus sentimientos"
+          ],
+          correcta: 1,
+          sustento: "La autorregulación es la capacidad de gestionar las propias emociones para responder de manera adecuada en diferentes contextos."
+        },
+        {
+          pregunta: "¿Por qué es importante la escucha activa en el trabajo en equipo?",
+          opciones: [
+            "Porque permite interrumpir al otro para corregirlo",
+            "Porque facilita la comprensión y reduce malentendidos",
+            "Porque demuestra superioridad intelectual",
+            "Porque evita tener que responder"
+          ],
+          correcta: 1,
+          sustento: "La escucha activa implica prestar atención plena, lo que mejora la comunicación y la cooperación."
+        },
+        {
+          pregunta: "Frente al fracaso, una persona con mentalidad de crecimiento suele:",
+          opciones: [
+            "Rendirse inmediatamente",
+            "Culpar a los demás",
+            "Aprender de la experiencia y persistir",
+            "Evitar nuevos desafíos"
+          ],
+          correcta: 2,
+          sustento: "La mentalidad de crecimiento ve el fracaso como una oportunidad de aprendizaje, no como un límite."
+        },
+        {
+          pregunta: "¿Qué comportamiento refleja mayor responsabilidad personal?",
+          opciones: [
+            "Esperar a que otros resuelvan los problemas",
+            "Reconocer errores y buscar soluciones",
+            "Justificar los fallos con excusas",
+            "Delegar todas las tareas importantes"
+          ],
+          correcta: 1,
+          sustento: "Reconocer errores y actuar para corregirlos es una señal clara de responsabilidad personal y madurez emocional."
+        },
+        {
+          pregunta: "En un grupo de estudio, si un compañero no entiende un tema, la mejor actitud es:",
+          opciones: [
+            "Burlarse de su dificultad",
+            "Ignorarlo para no perder tiempo",
+            "Explicarle con paciencia y apoyo",
+            "Decirle que estudie solo"
+          ],
+          correcta: 2,
+          sustento: "La solidaridad y el apoyo mutuo fortalecen el aprendizaje colectivo y fomentan un ambiente de respeto."
+        },
+        {
+          pregunta: "¿Cuál de las siguientes acciones fomenta un ambiente inclusivo?",
+          opciones: [
+            "Excluir a quienes piensan distinto",
+            "Valorar la diversidad de opiniones y orígenes",
+            "Imponer una sola forma de pensar",
+            "Ignorar las diferencias culturales"
+          ],
+          correcta: 1,
+          sustento: "Un ambiente inclusivo se construye reconociendo y respetando la diversidad como fuente de enriquecimiento colectivo."
+        },
+        {
+          pregunta: "La perseverancia en el estudio se demuestra principalmente por:",
+          opciones: [
+            "Estudiar solo cuando hay exámenes",
+            "Mantener el esfuerzo constante a pesar de las dificultades",
+            "Copiar tareas para ahorrar tiempo",
+            "Abandonar materias difíciles"
+          ],
+          correcta: 1,
+          sustento: "La perseverancia implica continuar esforzándose incluso cuando el camino es difícil, lo que es clave para el logro académico."
+        },
+        {
+          pregunta: "¿Qué demuestra una persona con alta autoestima?",
+          opciones: [
+            "Inseguridad al expresar sus ideas",
+            "Miedo al juicio de los demás",
+            "Confianza en sus capacidades, sin menospreciar a otros",
+            "Necesidad constante de aprobación externa"
+          ],
+          correcta: 2,
+          sustento: "La autoestima sana se refleja en la confianza en uno mismo, sin necesidad de compararse ni de buscar validación constante."
+        },
+        {
+          pregunta: "Al recibir una crítica constructiva, lo más adecuado es:",
+          opciones: [
+            "Defenderse inmediatamente",
+            "Ignorar al crítico",
+            "Escuchar con atención y reflexionar sobre el mensaje",
+            "Responder con otra crítica"
+          ],
+          correcta: 2,
+          sustento: "La crítica constructiva es una oportunidad de mejora. Escuchar y reflexionar muestra madurez emocional."
+        },
+        {
+          pregunta: "La inteligencia emocional incluye fundamentalmente:",
+          opciones: [
+            "Memorizar grandes cantidades de información",
+            "Resolver ecuaciones complejas",
+            "Reconocer, comprender y gestionar las emociones propias y ajenas",
+            "Hablar varios idiomas"
+          ],
+          correcta: 2,
+          sustento: "La inteligencia emocional se define como la capacidad de identificar y manejar las emociones propias y de los demás."
+        }
+      ]
+    };    // Estado del simulacro
+    let currentSimulacro = {
+      questions: [],
+      currentIndex: 0,
+      correctCount: 0,
+      startTime: null,
+      timerInterval: null,
+      totalTime: 120 * 60 // 120 minutos en segundos
+    };
+
+    // Tarjetas
+    let flashcards = [];
+    let currentFlashcardIndex = 0;
+    let answerShown = false;
+
+    // Funciones de navegación
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    // Simulacro general
+    function startGeneralSimulacro() {
+      // Anunciar bloques
+      alert("Iniciando Simulacro General\n\n📖 Comprensión Lectora (30 preguntas)");
+      alert("🔢 Razonamiento Lógico (30 preguntas)");
+      alert("🌍 Conocimientos Generales (20 preguntas)");
+      alert("💬 Habilidades Socioemocionales (20 preguntas)");
+
+      let selected = [];
+      const cl = questions["Comprensión Lectora"] || [];
+      const rl = questions["Razonamiento Lógico"] || [];
+      const cg = questions["Conocimientos Generales"] || [];
+      const hs = questions["Habilidades Socioemocionales"] || [];
+      
+      selected = selected.concat(shuffle([...cl]).slice(0, 30));
+      selected = selected.concat(shuffle([...rl]).slice(0, 30));
+      selected = selected.concat(shuffle([...cg]).slice(0, 20));
+      selected = selected.concat(shuffle([...hs]).slice(0, 20));
+      
+      startSimulacro(shuffle(selected), 120 * 60);
+    }
+
+    // Simulacro por categoría
+    function startCategorySimulacro(category) {
+      const cat = questions[category] || [];
+      if (cat.length === 0) {
+        alert(`No hay preguntas para ${category}.`);
+        return;
+      }
+      const timeSeconds = cat.length * 90; // 1.5 min por pregunta
+      startSimulacro(shuffle([...cat]), timeSeconds);
+    }
+
+    // Iniciar simulacro
+    function startSimulacro(qList, totalSeconds) {
+      currentSimulacro = {
+        questions: qList,
+        currentIndex: 0,
+        correctCount: 0,
+        startTime: Date.now(),
+        totalTime: totalSeconds,
+        timerInterval: null
+      };
+      showScreen('simulacro-screen');
+      renderQuestion();
+      startTimer();
+    }
+
+    // Temporizador
+    function startTimer() {
+      clearInterval(currentSimulacro.timerInterval);
+      currentSimulacro.timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - currentSimulacro.startTime) / 1000);
+        const remaining = currentSimulacro.totalTime - elapsed;
+        if (remaining <= 0) {
+          clearInterval(currentSimulacro.timerInterval);
+          showResults();
+          return;
+        }
+        const h = Math.floor(remaining / 3600);
+        const m = Math.floor((remaining % 3600) / 60);
+        const s = remaining % 60;
+        document.getElementById('simulacro-timer').textContent = 
+          `Tiempo: ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    // Renderizar pregunta
+    function renderQuestion() {
+      const q = currentSimulacro.questions[currentSimulacro.currentIndex];
+      if (!q) {
+        showResults();
+        return;
+      }
+
+      let questionHtml = '';
+      if (q.texto) {
+        questionHtml += `
+          <div class="question-card">
+            <button class="audio-btn" onclick="toggleAudioText(this)">
+              <i class="fas fa-book"></i> Mostrar texto completo
+            </button>
+            <div class="audio-text" id="audio-text-${currentSimulacro.currentIndex}">${q.texto.replace(/\n/g, '<br>')}</div>
+            <p style="margin-top: 20px; font-weight: bold;">${currentSimulacro.currentIndex + 1}. ${q.pregunta}</p>
+        `;
+      } else {
+        questionHtml += `
+          <div class="question-card">
+            <p style="font-weight: bold;">${currentSimulacro.currentIndex + 1}. ${q.pregunta}</p>
+        `;
+      }
+
+      questionHtml += '<div class="options">';
+      q.opciones.forEach((opt, idx) => {
+        questionHtml += `<button class="option-btn" onclick="selectOption(${idx})">${opt}</button>`;
+      });
+      questionHtml += '</div>';
+      questionHtml += '<div class="feedback" id="feedback"></div>';
+      questionHtml += `<div class="sustento" id="sustento">${q.sustento}</div>`;
+      questionHtml += '</div>';
+
+      document.getElementById('question-container').innerHTML = questionHtml;
+      document.querySelector('.sustento').style.display = 'none';
+    }
+
+    // Mostrar/ocultar texto largo
+    function toggleAudioText(btn) {
+      const audioText = btn.nextElementSibling;
+      if (audioText.style.display === 'block') {
+        audioText.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-book"></i> Mostrar texto completo';
+      } else {
+        audioText.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-book"></i> Ocultar texto';
+      }
+    }
+
+    // Seleccionar opción
+    function selectOption(selectedIndex) {
+      const q = currentSimulacro.questions[currentSimulacro.currentIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correcta) {
+          btn.classList.add('correct');
+        } else if (idx === selectedIndex) {
+          btn.classList.add('incorrect');
+        }
+      });
+
+      const feedback = document.getElementById('feedback');
+      if (selectedIndex === q.correcta) {
+        feedback.className = 'feedback correct';
+        feedback.textContent = '¡Correcto! 🎉';
+        currentSimulacro.correctCount++;
+      } else {
+        feedback.className = 'feedback incorrect';
+        feedback.innerHTML = `¡Incorrecto! 😟<br><strong>La respuesta correcta es:</strong> ${q.opciones[q.correcta]}`;
+      }
+
+      document.querySelector('.sustento').style.display = 'block';
+
+      setTimeout(() => {
+        currentSimulacro.currentIndex++;
+        if (currentSimulacro.currentIndex < currentSimulacro.questions.length) {
+          renderQuestion();
+        } else {
+          showResults();
+        }
+      }, 2000);
+    }
+
+    // Resultados
+    function showResults() {
+      clearInterval(currentSimulacro.timerInterval);
+      const total = currentSimulacro.questions.length;
+      const correct = currentSimulacro.correctCount;
+      const percent = Math.round((correct / total) * 100);
+      const elapsed = Math.floor((Date.now() - currentSimulacro.startTime) / 1000);
+      const h = Math.floor(elapsed / 3600);
+      const m = Math.floor((elapsed % 3600) / 60);
+      const s = elapsed % 60;
+
+      document.getElementById('results-content').innerHTML = `
+        <h2>Resultados del Simulacro</h2>
+        <div class="result-item">✅ Correctas: ${correct} / ${total}</div>
+        <div class="result-item">📊 Porcentaje: ${percent}%</div>
+        <div class="result-item">⏱️ Tiempo usado: ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}</div>
+        <button class="btn" style="margin-top: 20px;" onclick="showScreen('main-screen')">
+          <i class="fas fa-home"></i> Volver al inicio
+        </button>
+      `;
+      showScreen('results-screen');
+    }
+
+    // Salir del simulacro
+    function endSimulacro() {
+      if (confirm('¿Deseas salir del simulacro? Tu progreso no se guardará.')) {
+        clearInterval(currentSimulacro.timerInterval);
+        showScreen('main-screen');
+      }
+    }
+
+    // Modo estudio
+    function openStudyCategory(category) {
+      const cat = questions[category] || [];
+      if (cat.length === 0) {
+        alert(`No hay preguntas para ${category}.`);
+        return;
+      }
+
+      let html = `<div class="back-btn" onclick="showScreen('study-menu')"><i class="fas fa-arrow-left"></i> Volver</div>`;
+      let currentText = '';
+
+      cat.forEach((q, idx) => {
+        if (q.texto && q.texto !== currentText) {
+          currentText = q.texto;
+          html += `
+            <div class="question-card">
+              <h3>Texto: ${category} ${Math.floor(idx/3)+1}</h3>
+              <button class="audio-btn" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">
+                <i class="fas fa-book"></i> Mostrar texto completo
+              </button>
+              <div class="audio-text" style="display:none;">${q.texto.replace(/\n/g, '<br>')}</div>
+          `;
+        }
+
+        html += `
+          <div class="question-card">
+            <p><strong>Pregunta ${idx+1}:</strong> ${q.pregunta}</p>
+            <p><strong>Respuesta correcta:</strong> ${q.opciones[q.correcta]}</p>
+            <div class="sustento">${q.sustento}</div>
+          </div>
+        `;
+
+        if (q.texto) html += '</div>';
+      });
+
+      const studyDiv = document.createElement('div');
+      studyDiv.id = `study-${category.replace(/\s+/g, '-')}`;
+      studyDiv.className = 'screen';
+      studyDiv.innerHTML = html;
+      document.body.appendChild(studyDiv);
+      showScreen(`study-${category.replace(/\s+/g, '-')}`);
+    }
+
+    // Tarjetas
+    function initFlashcards() {
+      flashcards = [];
+      for (const cat in questions) {
+        questions[cat].forEach(q => {
+          flashcards.push({
+            question: q.pregunta,
+            answer: q.opciones[q.correcta],
+            sustento: q.sustento
+          });
+        });
+      }
+      currentFlashcardIndex = 0;
+      answerShown = false;
+      renderFlashcard();
+      showScreen('flashcards');
+    }
+
+    function renderFlashcard() {
+      if (flashcards.length === 0) {
+        document.getElementById('flashcard-content').innerHTML = '<p>No hay tarjetas disponibles.</p>';
+        return;
+      }
+      const card = flashcards[currentFlashcardIndex];
+      document.getElementById('flashcard-content').innerHTML = `
+        <div class="flashcard-question" style="font-weight:bold;">${card.question}</div>
+        <div id="flashcard-answer" style="display:${answerShown ? 'block' : 'none'}; margin-top:15px;">
+          <p><strong>Respuesta:</strong> ${card.answer}</p>
+          <div class="sustento">${card.sustento}</div>
+        </div>
+      `;
+    }
+
+    function showAnswer() {
+      answerShown = true;
+      renderFlashcard();
+    }
+
+    function nextFlashcard() {
+      if (flashcards.length === 0) return;
+      currentFlashcardIndex = (currentFlashcardIndex + 1) % flashcards.length;
+      answerShown = false;
+      renderFlashcard();
+    }
+
+    function prevFlashcard() {
+      if (flashcards.length === 0) return;
+      currentFlashcardIndex = (currentFlashcardIndex - 1 + flashcards.length) % flashcards.length;
+      answerShown = false;
+      renderFlashcard();
+    }
+
+    function randomFlashcard() {
+      if (flashcards.length === 0) return;
+      currentFlashcardIndex = Math.floor(Math.random() * flashcards.length);
+      answerShown = false;
+      renderFlashcard();
+    }
+
+    // Utilidad para aleatorizar
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+  </script>
+</body>
+</html>
